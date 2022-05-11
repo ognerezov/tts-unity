@@ -52,6 +52,12 @@ namespace NativeTextToSpeech
 #if UNITY_IOS 
             start_tts(on_finish,on_error);
 #endif
+#if UNITY_ANDROID 
+            activity.Call("runOnUiThread", new AndroidJavaRunnable(() =>
+            {
+                _javaObject.Call("start");
+            }));
+#endif            
         }
         
 
@@ -96,17 +102,14 @@ namespace NativeTextToSpeech
             return _instance;
         }
 
-        public TextToSpeech(Action finish, Action<string> error)  : base("net.okhotnikov.tts.TTSCallbackReceiver")
+        private TextToSpeech(Action finish, Action<string> error)  : base("net.okhotnikov.tts.TTSCallbackReceiver")
         {
             _finish = finish;
             _error = error;
 #if UNITY_ANDROID 
             AndroidJavaClass jc = new AndroidJavaClass("com.unity3d.player.UnityPlayer"); 
             activity = jc.GetStatic<AndroidJavaObject>("currentActivity");
-            activity.Call("runOnUiThread", new AndroidJavaRunnable(() =>
-            {
-                _javaObject = new AndroidJavaObject("net.okhotnikov.tts.TextToSpeechBridge", activity, this);
-            }));
+            _javaObject = new AndroidJavaObject("net.okhotnikov.tts.TextToSpeechBridge", activity, this);
 #endif
         }
 

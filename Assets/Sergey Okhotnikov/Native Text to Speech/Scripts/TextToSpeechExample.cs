@@ -34,8 +34,9 @@ public class TextToSpeechExample : MonoBehaviour
     
     void Start()
     {
-        _textToSpeech = new TextToSpeech(OnFinish,OnError);
+        _textToSpeech =  TextToSpeech.Create(OnFinish,OnError);
         LanguageInput.text = "en-US";
+        RateInput.text = "0.8";
     }
 
     private void OnFinish()
