@@ -32,13 +32,6 @@ public class TextToSpeechExample : MonoBehaviour
         TTSFinished();
     }
     
-    void Start()
-    {
-        _textToSpeech =  TextToSpeech.Create(OnFinish,OnError);
-        LanguageInput.text = "en-US";
-        RateInput.text = "0.8";
-    }
-
     private void OnFinish()
     {
         if (threadSafe)
@@ -80,6 +73,14 @@ public class TextToSpeechExample : MonoBehaviour
         StopButton.interactable = true;
     }
 
+    void Start()
+    {
+        _textToSpeech =  TextToSpeech.Create(OnFinish,OnError);
+        LanguageInput.text = "en-US";
+        RateInput.text = "0.8";
+    }
+
+    
     void Update()
     {
         if (!threadSafe)
